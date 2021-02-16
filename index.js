@@ -1,20 +1,20 @@
-var express = require('express');
-var app = express();
+import "core-js";
+import express from "express";
+const app = express();
 
 const POST = 4000;
 
-function handleListen(){
-    console.log("Listening on : http://localhost:4000");
-}
+const handleListen = () => console.log("Listening on : http://localhost:4000");
 
-function handleHome(req, res){
-    console.log(req);
-    res.send("Hello from home");
-}
+const handleHome = (req, res) => res.send("Hello from my Asome");
 
-function handleProfile(req, res){
-    res.send("yoou are on my profile");
+const handleProfile = (req, res) => res.send("yoou are on my profile");
+
+const betweenHome = (req, res, next) => {
+    console.log('Bewteen');
+    next();
 }
+app.use(betweenHome);
 
 app.get("/", handleHome);
 
