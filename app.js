@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 // application이 안전하게 도와줌
 app.use(helmet());
-// application을 이용한 모든 것을 loggin하는 것
+// application을 이용한 모든 log를 출력
 app.use(morgan("dev"));
 app.use(function(req, res, next) {
     res.setHeader("Content-Security-Policy", "script-src 'self' http://archive.org");
