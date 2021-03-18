@@ -1,10 +1,11 @@
+// controller에서 어떠한 데이터를 가지고 있다고 표현하고 싶을 땐 :과 이름을 넣으면 된다.
+
 // Global
 const HOME = "/";
 const JOIN = "/join";
 const LOGIN= "/login";
 const LOGOUT = "/logout";
 const SEARCH = "/search";
-
 
 // Users
 const USERS = "/users";
@@ -44,8 +45,20 @@ const routes = {
             return VIDEO_DETAIL;
         }
     },
-    editVideo: EDIT_VIDEO,
-    deleteVideo: DELETE_VIDEO
+    editVideo: (id)=>{
+        if(id){
+            return `/videos/${id}/edit`;
+        }else{
+            return EDIT_VIDEO;
+        }
+    },
+    deleteVideo: (id) => {
+        if(id){
+            return `/videos/${id}/delete`;
+        }else{
+            return DELETE_VIDEO;
+        }
+    }
 };
 
 export default routes;

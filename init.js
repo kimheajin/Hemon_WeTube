@@ -1,6 +1,8 @@
 import "./db.js"
 import app from "./app.js";
 import dotenv from "dotenv";
+import "./models/Video.js";
+import "./models/Comment.js";
 dotenv.config();
 
 // PORT번호를 dotenv로 숨겼다.
