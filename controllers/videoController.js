@@ -1,6 +1,6 @@
 import routes from "../routes.js";
 import Video from "../models/Video.js";
-import { Error } from "mongoose";
+// import { Error } from "mongoose";
 
 // javascript의 특징은 어떠한 작업을 할 시 그 작업이 끝날 때 까지 기다리지 않고 다른작업을 시작하는 것이다.(한번에 많은일을 할 수 있음.)
 // 때문에 기다림이 필요한 작업인 경우 아래의 기능을 통해 기다리게 할 수 있다. 
@@ -21,14 +21,25 @@ export const home = async(req, res) => {
         res.render("home", { pageTitle:"Home" , videos: [] });
     }
 };
-export const search = (req, res) => {
+export const search = async(req, res) => {
+    // req.query == {query}와 같다.
+    //아래 코드는 이것과 같다.-> const searchingBy = req.query.term; (ES6이전방식)
     const {
         query : {term : searchingBy }
     } = req;
-    // req.query == {query}와 같다.
-    //위의 코드는 이것과 같다.-> const searchingBy = req.query.term; (ES6이전방식)
+    // let으로 정의한 변수는 값을 바꿀 수 있고, const로 정의한 함수는 값을 바꿀 수 없다.
+    // 아래의 videos가 req의 요구에 맞는 값을 찾지 못한다면, videos는 계속 빈 값이다.
+    // 아래의 videos가 req의 요구에 맞는 값을 찾았다면, videos의 빈 값은 req값과 일치하는 데이터로 덮어씌워질 것이다.
+    let videos = [];
+    try{
+        // i는 insensitive의 약자로 덜 민감하다는 의미(대소문자 구분 안함)
+        videos = await Video.find({title: {$regex: searchingBy, $options: "i" }});
+    }catch(error){
+        console.log(error);
+    }
     res.render("search", { pageTitle:"Search" , searchingBy, videos});
 }
+
 export const getUpload = (req, res) => res.render("upload", { pageTitle:"Upload" });
 export const postUpload = async(req, res) => {
     // multer에서 준 file path = 새로운 비디오 fileUrl 연결
@@ -91,7 +102,7 @@ export const postEditVideo = async(req,res) =>{
     }
 };
 
-export const deleteVideo = (req, res) => {
+export const deleteVideo = async(req, res) => {
     const{
         params: {id}
     }=req;
